@@ -9,9 +9,9 @@ static bool test_grayscale_known_values() {
     std::cout << "[Test] CPU Grayscale known colors... ";
     // RGB colors: Red, Green, Blue, White, Black
     std::vector<unsigned char> rgb = {
-        255,   0,   0, // Red   -> 0.299 * 255 = 76.245 -> 76
-          0, 255,   0, // Green -> 0.587 * 255 = 149.685 -> 149
-          0,   0, 255, // Blue  -> 0.114 * 255 = 29.07 -> 29
+        255,   0,   0, // Red   -> (299*255 + 500)/1000 = 76
+          0, 255,   0, // Green -> (587*255 + 500)/1000 = 150
+          0,   0, 255, // Blue  -> (114*255 + 500)/1000 = 29
         255, 255, 255, // White -> 255
           0,   0,   0  // Black -> 0
     };
@@ -19,7 +19,7 @@ static bool test_grayscale_known_values() {
     cpu_rgb_to_grayscale(rgb.data(), gray.data(), 5, 1, 3);
 
     assert(gray[0] == 76);
-    assert(gray[1] == 149);
+    assert(gray[1] == 150);
     assert(gray[2] == 29);
     assert(gray[3] == 255);
     assert(gray[4] == 0);

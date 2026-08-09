@@ -18,11 +18,11 @@ void cpu_rgb_to_grayscale(const unsigned char* input,
     for (int i = 0; i < total_pixels; ++i) {
         const int src_idx = i * channels;
         if (channels >= 3) {
-            const float r = static_cast<float>(input[src_idx]);
-            const float g = static_cast<float>(input[src_idx + 1]);
-            const float b = static_cast<float>(input[src_idx + 2]);
-            const float gray = 0.299f * r + 0.587f * g + 0.114f * b;
-            output[i] = static_cast<unsigned char>(std::clamp(gray, 0.0f, 255.0f));
+            const int r = static_cast<int>(input[src_idx]);
+            const int g = static_cast<int>(input[src_idx + 1]);
+            const int b = static_cast<int>(input[src_idx + 2]);
+            const int gray = (299 * r + 587 * g + 114 * b + 500) / 1000;
+            output[i] = static_cast<unsigned char>(std::clamp(gray, 0, 255));
         } else {
             output[i] = input[src_idx];
         }

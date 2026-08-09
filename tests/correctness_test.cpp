@@ -172,6 +172,26 @@ int main() {
                   << " | Max Diff: " << res_shared.max_diff
                   << " | Mean Diff: " << std::fixed << std::setprecision(4) << res_shared.mean_diff
                   << " | Mismatches: " << res_shared.mismatch_count << "\n";
+
+        // Diagnostic Reporting: Print first 5 mismatches if any failure occurs
+        if (!case_passed) {
+            std::cout << "  >>> Diagnostic Details (First Mismatching Pixels) <<<\n";
+            int printed = 0;
+            for (int y = 0; y < tc.height && printed < 5; ++y) {
+                for (int x = 0; x < tc.width && printed < 5; ++x) {
+                    int idx = y * tc.width + x;
+                    int diff_n = std::abs(static_cast<int>(cpu_output[idx]) - static_cast<int>(gpu_naive_output[idx]));
+                    int diff_s = std::abs(static_cast<int>(cpu_output[idx]) - static_cast<int>(gpu_shared_output[idx]));
+                    if (diff_n > 1 || diff_s > 1) {
+                        std::cout << "      Pixel (" << x << ", " << y << "): CPU="
+                                  << static_cast<int>(cpu_output[idx])
+                                  << " | GPU_Naive=" << static_cast<int>(gpu_naive_output[idx]) << " (diff=" << diff_n << ")"
+                                  << " | GPU_Shared=" << static_cast<int>(gpu_shared_output[idx]) << " (diff=" << diff_s << ")\n";
+                        printed++;
+                    }
+                }
+            }
+        }
         std::cout << "-------------------------------------------------------------------\n";
     }
 

@@ -34,11 +34,11 @@ __global__ void grayscale_naive_kernel(const unsigned char* __restrict__ d_input
     int idx = y * width + x;
     if (channels >= 3) {
         int src_idx = idx * channels;
-        float r = static_cast<float>(d_input[src_idx]);
-        float g = static_cast<float>(d_input[src_idx + 1]);
-        float b = static_cast<float>(d_input[src_idx + 2]);
-        float gray = 0.299f * r + 0.587f * g + 0.114f * b;
-        d_output[idx] = static_cast<unsigned char>(gray > 255.0f ? 255.0f : (gray < 0.0f ? 0.0f : gray));
+        int r = static_cast<int>(d_input[src_idx]);
+        int g = static_cast<int>(d_input[src_idx + 1]);
+        int b = static_cast<int>(d_input[src_idx + 2]);
+        int gray = (299 * r + 587 * g + 114 * b + 500) / 1000;
+        d_output[idx] = static_cast<unsigned char>(gray > 255 ? 255 : (gray < 0 ? 0 : gray));
     } else {
         d_output[idx] = d_input[idx * channels];
     }
