@@ -15,8 +15,8 @@ $(BIN_DIR) $(BUILD_DIR):
 	mkdir -p $@
 
 # Standalone CPU test (can be built on macOS / machines without NVCC)
-cpu_test: $(BIN_DIR) $(BUILD_DIR) $(BUILD_DIR)/cpu_filters.o
-	$(CXX) $(CXXFLAGS) tests/cpu_test_runner.cpp $(BUILD_DIR)/cpu_filters.o -o $(BIN_DIR)/cpu_test
+cpu_test: $(BIN_DIR) $(BUILD_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/dispatch.o
+	$(CXX) $(CXXFLAGS) tests/cpu_test_runner.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/dispatch.o -o $(BIN_DIR)/cpu_test
 
 $(BUILD_DIR)/cpu_filters.o: src/cpu_filters.cpp src/cpu_filters.h | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c src/cpu_filters.cpp -o $@

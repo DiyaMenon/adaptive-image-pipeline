@@ -108,20 +108,51 @@ static bool test_pipeline_timing() {
     return true;
 }
 
+#include "dispatch.h"
+
+static bool test_dispatcher_boundaries() {
+    std::cout << "[Test] Adaptive Dispatcher threshold boundaries (20,736 px)... ";
+    
+    // Below threshold (128x128 = 16,384 px) -> CPU
+    assert(dispatch(128, 128) == ExecutionTarget::CPU);
+
+    // 1px below threshold (143x144 = 20,592 px) -> CPU
+    assert(dispatch(143, 144) == ExecutionTarget::CPU);
+
+    // Exact threshold boundary (144x144 = 20,736 px) -> GPU
+    assert(dispatch(144, 144) == ExecutionTarget::GPU);
+
+    // 1px above threshold (144x145 = 20,880 px) -> GPU
+    assert(dispatch(144, 145) == ExecutionTarget::GPU);
+
+    // Above threshold (256x256 = 65,536 px) -> GPU
+    assert(dispatch(256, 256) == ExecutionTarget::GPU);
+
+    // Large image (4096x4096) -> GPU
+    assert(dispatch(4096, 4096) == ExecutionTarget::GPU);
+
+    // Tiny image (1x1) -> CPU
+    assert(dispatch(1, 1) == ExecutionTarget::CPU);
+
+    std::cout << "PASSED\n";
+    return true;
+}
+
 int main() {
-    std::cout << "=== Running CPU Filter Sanity Checks ===\n";
+    std::cout << "=== Running CPU & Dispatcher Sanity Checks ===\n";
     bool ok = true;
     ok &= test_grayscale_known_values();
     ok &= test_sobel_flat_image();
     ok &= test_sobel_vertical_edge();
     ok &= test_edge_cases();
     ok &= test_pipeline_timing();
+    ok &= test_dispatcher_boundaries();
 
     if (ok) {
-        std::cout << "=== All CPU Filter Sanity Checks Passed! ===\n";
+        std::cout << "=== All Sanity Checks Passed! ===\n";
         return 0;
     } else {
-        std::cerr << "=== CPU Filter Checks Failed ===\n";
+        std::cerr << "=== Sanity Checks Failed ===\n";
         return 1;
     }
 }
