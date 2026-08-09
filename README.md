@@ -196,9 +196,9 @@ adaptive-image-pipeline/
     ├── .gitkeep                    # Directory tracking for benchmark CSVs and charts
     ├── benchmark.csv               # Raw multi-resolution benchmark metrics
     ├── crossover_benchmark.csv     # Raw fine-grained crossover measurements
-    ├── plot1_cpu_vs_gpu_e2e.png    # Chart: CPU vs GPU End-to-End time
-    ├── plot2_naive_vs_optimized.png# Chart: Naive vs Shared-Memory kernel time
-    └── plot3_block_size_sweep.png  # Chart: 16x16 vs 32x32 block dimension comparison
+    ├── plot1_cpu_vs_gpu_e2e.png          # Chart: CPU vs GPU End-to-End time
+    ├── plot2_naive_vs_optimized_kernel.png # Chart: Naive vs Shared-Memory kernel time
+    └── plot3_block_size_sweep.png        # Chart: 16x16 vs 32x32 block dimension comparison
 ```
 
 ---
@@ -222,13 +222,13 @@ cd adaptive-image-pipeline
 make all
 
 # 1. Run Correctness Test Suite (Validates all 8 synthetic edge cases)
-./bin/tests
+./bin/correctness_test
 
 # 2. Run Full Multi-Resolution Benchmark Sweep
-./bin/benchmarks
+./bin/run_benchmarks
 
 # 3. Run Fine-Grained Crossover Benchmark Sweep
-./bin/crossover
+./bin/run_crossover
 
 # 4. Generate Benchmark Visualizations
 python3 benchmarks/plot_benchmarks.py
@@ -240,6 +240,8 @@ python3 benchmarks/plot_benchmarks.py
 ---
 
 ## Example CLI Output
+
+*(Note: The following outputs are illustrative single-run CLI demonstrations; formal benchmark measurements with warm-up discards across repeated runs are reported in the Benchmark section above.)*
 
 ```text
 ===================================================================
