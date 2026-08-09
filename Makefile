@@ -34,8 +34,8 @@ pipeline: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/dispatch.o $(BUILD_
 tests: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o
 	$(NVCC) $(NVCCFLAGS) tests/correctness_test.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o -o $(BIN_DIR)/correctness_test
 
-benchmarks: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/dispatch.o $(BUILD_DIR)/gpu_filters.o
-	$(NVCC) $(NVCCFLAGS) benchmarks/run_benchmarks.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/dispatch.o $(BUILD_DIR)/gpu_filters.o -o $(BIN_DIR)/run_benchmarks
+benchmarks: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o
+	$(NVCC) $(NVCCFLAGS) benchmarks/run_benchmarks.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o -o $(BIN_DIR)/run_benchmarks
 
 clean:
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
