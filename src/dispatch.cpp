@@ -3,7 +3,9 @@
 
 #include <iostream>
 
-#if __has_include(<cuda_runtime.h>)
+#if defined(NO_CUDA)
+#define CUDA_AVAILABLE 0
+#elif defined(__CUDACC__) || __has_include(<cuda_runtime.h>)
 #include "gpu_filters.cuh"
 #define CUDA_AVAILABLE 1
 #else
