@@ -11,8 +11,9 @@
 #endif
 
 // Empirically measured on NVIDIA Tesla T4 GPU in Google Colab:
-// - 128x128 (16,384 pixels): CPU (0.1954 ms) < GPU Shared E2E (0.2215 ms) -> CPU
-// - 144x144 (20,736 pixels): CPU (0.3009 ms) > GPU Shared E2E (0.2796 ms) -> GPU
+// - 128x128 (16,384 pixels): CPU (0.3008 ms) < GPU Shared E2E (0.3241 ms) -> CPU
+// - 144x144 (20,736 pixels): CPU (0.3348 ms) < GPU Shared E2E (0.5604 ms) -> CPU
+// - 160x160 (25,600 pixels): CPU (0.4010 ms) > GPU Shared E2E (0.2880 ms) -> GPU
 // Note: This threshold was measured on Google Colab's Tesla T4 instance, not the M2 development machine.
 ExecutionTarget dispatch(int width, int height) {
     const int pixel_count = width * height;

@@ -111,28 +111,29 @@ static bool test_pipeline_timing() {
 #include "dispatch.h"
 
 static bool test_dispatcher_boundaries() {
-    std::cout << "[Test] Adaptive Dispatcher threshold boundaries (20,736 px)... ";
+    std::cout << "[Test] Adaptive Dispatcher threshold boundaries (25,600 px)... ";
     
-    // Below threshold (128x128 = 16,384 px) -> CPU
+    // 1. 16,384 px (128x128) -> CPU
     assert(dispatch(128, 128) == ExecutionTarget::CPU);
 
-    // 1px below threshold (143x144 = 20,592 px) -> CPU
-    assert(dispatch(143, 144) == ExecutionTarget::CPU);
+    // 2. 20,736 px (144x144) -> CPU
+    assert(dispatch(144, 144) == ExecutionTarget::CPU);
 
-    // Exact threshold boundary (144x144 = 20,736 px) -> GPU
-    assert(dispatch(144, 144) == ExecutionTarget::GPU);
+    // 3. 25,599 px (1px below 25,600 threshold) -> CPU
+    assert(dispatch(1, 25599) == ExecutionTarget::CPU);
 
-    // 1px above threshold (144x145 = 20,880 px) -> GPU
-    assert(dispatch(144, 145) == ExecutionTarget::GPU);
+    // 4. 25,600 px (exact threshold: 160x160) -> GPU
+    assert(dispatch(160, 160) == ExecutionTarget::GPU);
 
-    // Above threshold (256x256 = 65,536 px) -> GPU
+    // 5. 25,601 px (1px above threshold) -> GPU
+    assert(dispatch(1, 25601) == ExecutionTarget::GPU);
+
+    // 6. 65,536 px (256x256) -> GPU
     assert(dispatch(256, 256) == ExecutionTarget::GPU);
 
-    // Large image (4096x4096) -> GPU
-    assert(dispatch(4096, 4096) == ExecutionTarget::GPU);
-
-    // Tiny image (1x1) -> CPU
-    assert(dispatch(1, 1) == ExecutionTarget::CPU);
+    // Additional sanity edge checks:
+    assert(dispatch(4096, 4096) == ExecutionTarget::GPU); // Large image
+    assert(dispatch(1, 1) == ExecutionTarget::CPU);         // Tiny image
 
     std::cout << "PASSED\n";
     return true;

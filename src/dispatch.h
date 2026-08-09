@@ -9,13 +9,14 @@ enum class ExecutionTarget {
 };
 
 // Empirically measured crossover threshold on NVIDIA Tesla T4 in Google Colab:
-// - 128x128 (16,384 pixels): CPU (0.1954 ms) < GPU Shared E2E (0.2215 ms) -> CPU is faster
-// - 144x144 (20,736 pixels): CPU (0.3009 ms) > GPU Shared E2E (0.2796 ms) -> GPU is faster
+// - 128x128 (16,384 pixels): CPU (0.3008 ms) < GPU Shared E2E (0.3241 ms) -> CPU is faster
+// - 144x144 (20,736 pixels): CPU (0.3348 ms) < GPU Shared E2E (0.5604 ms) -> CPU is faster
+// - 160x160 (25,600 pixels): CPU (0.4010 ms) > GPU Shared E2E (0.2880 ms) -> GPU is faster
 // Measured on remote NVIDIA Tesla T4 GPU (Google Colab), NOT on the Apple M2 development machine.
-constexpr int CROSSOVER_PIXEL_THRESHOLD = 20736;
+constexpr int CROSSOVER_PIXEL_THRESHOLD = 25600;
 
 // Dispatches workload to CPU or GPU based on image dimensions.
-// Returns ExecutionTarget::CPU if width * height < 20736, and ExecutionTarget::GPU otherwise.
+// Returns ExecutionTarget::CPU if width * height < 25600, and ExecutionTarget::GPU otherwise.
 ExecutionTarget dispatch(int width, int height);
 
 // Returns a human-readable name of the execution target.
