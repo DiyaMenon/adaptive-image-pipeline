@@ -1,0 +1,16 @@
+# Build artifacts
+bin/
+build/
+*.o
+*.out
+*.dSYM/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Generated benchmark output & data (keep results/ folder via .gitkeep)
+results/*.csv
+results/*.png
+results/crossover_notes.md
+!results/.gitkeep
