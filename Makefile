@@ -6,7 +6,7 @@ NVCCFLAGS ?= -std=c++17 -O3 -Iinclude -Isrc -Xcompiler "-Wall -Wextra"
 BIN_DIR = bin
 BUILD_DIR = build
 
-.PHONY: all clean cpu_test pipeline tests benchmarks
+.PHONY: all clean cpu_test pipeline tests benchmarks crossover
 
 all: pipeline tests benchmarks
 
@@ -36,6 +36,9 @@ tests: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o
 
 benchmarks: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o
 	$(NVCC) $(NVCCFLAGS) benchmarks/run_benchmarks.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o -o $(BIN_DIR)/run_benchmarks
+
+crossover: $(BIN_DIR) $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o
+	$(NVCC) $(NVCCFLAGS) benchmarks/run_crossover.cpp $(BUILD_DIR)/cpu_filters.o $(BUILD_DIR)/gpu_filters.o -o $(BIN_DIR)/run_crossover
 
 clean:
 	rm -rf $(BUILD_DIR) $(BIN_DIR)
